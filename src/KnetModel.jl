@@ -23,7 +23,7 @@ end
 """
 Given a Graph, construct the corresponding KnetModel
 """
-function KnetModel(g::KnetONNX.Types.Graph)
+function KnetModel(g::KnetOnnx.Types.Graph)
     model_layers = get_ModelLayers(g)
     tensors = TensorDict(model_layers, g)
     model_inputs = [i.name for i in g.input]
@@ -98,7 +98,7 @@ function forward(km::KnetModel, ml::ModelLayer)
     if length(inputs) == 1; out = ml.layer(inputs[1]);
         else; out = ml.layer(inputs...); end
         #else; out = ml.layer(inputs[1]); end
-       
+
         # SAVE OUTPUTS
         # check if there are multiple outputs (rnn etc.) before saving them to model.tensors
     if length(ml.outputs) == 1; km.tensors[ml.outputs[1]] = out;
@@ -106,7 +106,7 @@ function forward(km::KnetModel, ml::ModelLayer)
  end
 
 function (m::KnetModel)(args...)
-    
+
     # reset model.tensors (figure out a smarter/faster reset)
     m.tensors = TensorDict(m.model_layers, m.graph)
 
@@ -115,7 +115,7 @@ function (m::KnetModel)(args...)
     # check if we want multiple inputs (x should be a list) or a single input (x is a single array)
     #if length(m.model_inputs) == 1; m.tensors[m.model_inputs[1]] = x;
         #else; for (i,model_input) in enumerate(m.model_inputs); m.tensors[model_input] = x[i]; end; end
-    
+
     for (i, arg) in enumerate(args)
         m.tensors[m.model_inputs[i]] = arg
     end
@@ -163,7 +163,6 @@ import Knet: Data
 (m::KnetModel)(x,y) = Knet.nll(m(x), y)
 
 """
-    Calling KnetModel with a Knet.Data object computes the mean nll for 
+    Calling KnetModel with a Knet.Data object computes the mean nll for
 """
 (m::KnetModel)(d::Data) = Knet.mean(m(x,y) for (x,y) in d)
-

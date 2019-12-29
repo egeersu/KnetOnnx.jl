@@ -53,14 +53,14 @@ Converters Begin Here
     # - outs:  the names of the tensors that are the outputs of the calculations. These are just the names: strings.
 
 """
- 
+
 # GEMM - trains bias also for gemm that is not a linear layer, fix that, write new gemm and a separate linear
 
 function converter_gemm(node, g)
     input1 = node.input[1]
 
     #the layer is a Knet Layer
-    layer = KnetONNX.KnetLayers.Linear(input=1,output=1)
+    layer = KnetOnnx.KnetLayers.Linear(input=1,output=1)
 
     # use g.initializer to modify KnetLayer
     w_name = node.input[2]
@@ -68,13 +68,13 @@ function converter_gemm(node, g)
     w = g.initializer[w_name]
     w = transpose(w)
     b = g.initializer[b_name]
-    
-    w = KnetONNX.KnetLayers.ConvertParams(w)
-    b = KnetONNX.KnetLayers.ConvertParams(b)
-    
+
+    w = KnetOnnx.KnetLayers.ConvertParams(w)
+    b = KnetOnnx.KnetLayers.ConvertParams(b)
+
     layer.bias = b
     layer.mult.weight = w
-        
+
     # return input tensor NAMES, it is called args: [input1, ...]
     # you can take the inputs from model.tensors using these names
     args = [input1]
@@ -114,7 +114,7 @@ function converter_leakyrelu(node, g)
 end
 
 # CONV
-#conv1 = KnetONNX.KnetLayers.Conv(;height=3, width=3, inout = 3=>64)
+#conv1 = KnetOnnx.KnetLayers.Conv(;height=3, width=3, inout = 3=>64)
 #currently treating [1,1,1,1] padding as an integer 1, same for stride
 function converter_cnn(node, g)
     args = [node.input[1]]
@@ -125,7 +125,7 @@ function converter_cnn(node, g)
     if :pads in keys(node.attribute); padding = node.attribute[:pads][1]; end
     if :strides in keys(node.attribute); stride = node.attribute[:strides][1]; end
 
-    layer = KnetONNX.KL.Conv(height=1,width=1,inout=1=>1; padding = padding, stride = stride)
+    layer = KnetOnnx.KL.Conv(height=1,width=1,inout=1=>1; padding = padding, stride = stride)
 
     if length(node.input) >= 2
         w_name = node.input[2]
@@ -257,6 +257,3 @@ function (u::unsqueeze_layer)(x)
     new_size = (data...,)
     reshape(x, new_size)
 end
-
-
-
