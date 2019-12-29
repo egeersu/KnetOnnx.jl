@@ -1,8 +1,8 @@
 <img src="https://github.com/onnx/onnx/blob/master/docs/ONNX_logo_main.png?raw=true" width="400">
 
-KnetONNX reads an ONNX file and creates the corresponding Model in Knet that can be re-designed, re-trained or simply used for inference.
+KnetOnnx reads an ONNX file and creates the corresponding Model in Knet that can be re-designed, re-trained or simply used for inference.
 
-If you are planning to move your models from PyTorch or Tensorflow to Knet, or simply desiring to play with popular pre-trained neural networks: KnetONNX provides that functionality.
+If you are planning to move your models from PyTorch or Tensorflow to Knet, or simply desiring to play with popular pre-trained neural networks: KnetOnnx provides that functionality.
 
 [Open Neural Network Exchange (ONNX)](https://onnx.ai/)
  is a community project created by Facebook and Microsoft. It provides a definition of an extensible computation graph model, as well as definitions of built-in operators and standard data types.
@@ -18,7 +18,7 @@ Once you download the ONNX file, call KnetModel() with the ONNX file's path to c
 Here is how you create the Knet model corresponding to an ONNX file and perform a forward pass:
 
 ```julia
-using Knet, KnetONNX
+using Knet, KnetOnnx
 
 #provide the ONNX file's path
 model = KnetModel("vgg.onnx");
@@ -53,6 +53,6 @@ For a more detailed tutorial please refer to [MLP_Tutorial](https://github.com/e
 ## Collaboration
 Here are some cool ideas if you want to collaborate:
 - Export functionality. This would be a tough problem so feel free to get in contact.
-- Adding a new [KnetLayer.](https://github.com/egeersu/KnetONNX/tree/master/KnetLayers)
-- Adding a new [Converter:](https://github.com/egeersu/KnetONNX/blob/master/converters.jl) (ONNX Operator -> KnetLayer)
+- Adding a new [KnetLayer.](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers)
+- Adding a new [Converter:](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl) (ONNX Operator -> KnetLayer)
 - Testing ONNX models from the [zoo](https://github.com/onnx/models) and sending bug reports.
