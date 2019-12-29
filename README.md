@@ -21,7 +21,7 @@ Here is how you create the Knet model corresponding to an ONNX file and perform 
 using KnetOnnx
 
 #provide the ONNX file's path
-model = KnetModel("vgg.onnx");
+model = KnetModel("vgg16.onnx");
 
 #dummy input for prediction
 x = ones(Float32,224,224,3,10)
@@ -29,7 +29,6 @@ x = ones(Float32,224,224,3,10)
 #call KnetModel object with the model input
 model(x) #the output is a 1000×10 Array{Float32,2}
 ```
-For a more detailed tutorial please refer to [MLP_Tutorial](https://github.com/egeersu/KnetONNX/blob/master/MLP_Tutorial.ipynb)
 
 ## Supported Operations
 - [x] ReLU
