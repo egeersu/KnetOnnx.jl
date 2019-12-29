@@ -3,4 +3,3 @@ graph = ONNXtoGraph(mlp_path)
 PrintGraph(graph)
 
 mlp = KnetModel(mlp_path)
-println(mlp.tensors)
