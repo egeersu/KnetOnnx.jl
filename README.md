@@ -1,6 +1,6 @@
 <img src="https://github.com/onnx/onnx/blob/master/docs/ONNX_logo_main.png?raw=true" width="400">
 
-KnetONNX lets you read an ONNX file and create a Knet Model that can be used for prediction, re-designed or re-trained.
+KnetONNX reads an ONNX file and creates the corresponding Model in Knet that can be re-designed, re-trained or simply used for inference.
 
 If you are planning to move your models from PyTorch or Tensorflow to Knet, or simply desiring to play with popular pre-trained neural networks: KnetONNX provides that functionality.
 
