@@ -2,5 +2,5 @@ using KnetOnnx
 using Test
 
 @testset "KnetOnnx.jl" begin
-    # Write your own tests here.
+    @test 1 == 1
 end
