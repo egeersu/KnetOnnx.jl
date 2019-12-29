@@ -1,8 +1,8 @@
 module Proto
 
-using Pkg
-Pkg.add("Compat")
-Pkg.add("ProtoBuf")
+#using Pkg
+#Pkg.add("Compat")
+#Pkg.add("ProtoBuf")
 
 # syntax: proto2
 using Compat
