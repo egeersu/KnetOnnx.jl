@@ -3,7 +3,7 @@ module KnetOnnx
 #using Pkg
 #packages = ["ProtoBuf", "MacroTools", "DataFlow", "Statistics"]
 #for p in packages; Pkg.add(p); end
-#using ProtoBuf, MacroTools, DataFlow, Statistics
+using ProtoBuf, MacroTools, DataFlow, Statistics
 
 include("onnx_pb.jl")
 include("convert.jl")

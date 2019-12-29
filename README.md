@@ -18,7 +18,7 @@ Once you download the ONNX file, call KnetModel() with the ONNX file's path to c
 Here is how you create the Knet model corresponding to an ONNX file and perform a forward pass:
 
 ```julia
-using Knet, KnetOnnx
+using KnetOnnx
 
 #provide the ONNX file's path
 model = KnetModel("vgg.onnx");

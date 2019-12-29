@@ -1,5 +1,3 @@
-#using Pkg; Pkg.add("BSON"); using BSON
-
 rawproto(io::IO) = readproto(io, Proto.ModelProto())
 rawproto(path::String) = open(rawproto, path)
 

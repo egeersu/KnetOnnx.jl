@@ -1,15 +1,3 @@
-#=
-    Now, we define the new data types.
-    Model => ModelProto
-    Graph => GraphProto
-    Node  => NodeProto
-    Attribute => AttributeProto
-    The new types will consist of Julian attributes.
-    
-    The purpose of dealing with these newer type is to make
-    the process simpler and easier to debug. 
-=# 
-
 module Types
 
 mutable struct ValueInfo
@@ -28,12 +16,12 @@ mutable struct Node
 end
 
 mutable struct Graph
-    node::Array{Any, 1}         
+    node::Array{Any, 1}
     name::AbstractString
     initializer::Dict{Any ,Any}             #Storing the array data instead of the tensorproto vector.
     doc_string::AbstractString              #in Dict format.
     input::Array{ValueInfo ,1}              # ValueInfoProto -> ValueInfo
-    output::Array{ValueInfo, 1}                    # 
+    output::Array{ValueInfo, 1}                    #
     value_info::Array{ValueInfo, 1}                # Done!
 end
 
@@ -45,7 +33,7 @@ mutable struct Model
     domain::AbstractString
     model_version::Int64
     doc_string::AbstractString
-    graph::Graph                  
+    graph::Graph
     metadata_props::Array{Any, 1}            #StringStringEntryProto to Dict
 end
 
