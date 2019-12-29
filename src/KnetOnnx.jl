@@ -1,4 +1,4 @@
-module KnetONNX
+module KnetOnnx
 
 using Pkg
 packages = ["ProtoBuf", "MacroTools", "DataFlow", "Statistics"]
