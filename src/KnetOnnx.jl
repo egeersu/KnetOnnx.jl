@@ -1,6 +1,6 @@
 module KnetOnnx
 
-using ProtoBuf, MacroTools, DataFlow, Statistics
+using ProtoBuf, MacroTools, Statistics, DataFlow, Knet
 
 include("graph/onnx_pb.jl")
 include("graph/new_types.jl")

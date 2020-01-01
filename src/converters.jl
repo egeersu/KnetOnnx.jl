@@ -36,12 +36,15 @@ function convert(node, g)
     if node.op_type == "Dropout"; return converter_dropout(node,g); end
     if node.op_type == "Flatten"; return converter_flatten(node,g); end
     if node.op_type == "Constant"; return converter_constant(node, g); end
+    if node.op_type == "Shape"; return converter_shape(node, g); end
+    if node.op_type == "Squeeze"; return converter_squeeze(node, g); end
+    if node.op_type == "Unsqueeze"; return converter_unsqueeze(node,g); end
+    if node.op_type == "Concat"; return converter_concat(node,g); end
     if node.op_type == "RNN"; return converter_rnn(node, g);
     else; println("ONNX Operation not yet implemented: ", node.op_type);
     end
 
 end
-
 
 function converter_rnn(node, g)
     1
@@ -225,6 +228,11 @@ function node_to_RNN(node, g)
 end
 
 # CONSTANT
+mutable struct constant_layer
+    data
+end
+(l::constant_layer)() = data
+
 function UInt8toFloat32(val)
     dims = val.dims
     data = val.raw_data
@@ -240,12 +248,6 @@ function get_int(data)
     return c1*ints[1] + c2*ints[2] + c3*ints[3] + c4*ints[4]
 end
 
-mutable struct constant_layer
-    data
-end
-
-(l::constant_layer)() = l.data
-
 function converter_constant(node, g)
     args = node.input
     outs = node.output
@@ -253,9 +255,46 @@ function converter_constant(node, g)
     return (args, layer, outs)
 end
 
+# SHAPE
+mutable struct shape_layer
+end
+
+(l::shape_layer)(x) = size(x)
+
+function converter_shape(node, g)
+    args = node.input
+    outs = node.output
+    layer = shape_layer()
+    (args, layer, outs)
+end
+
+
+# UNSQUEEZE
+function converter_unsqueeze(node)
+    args = node.input
+    outs = node.output
+    layer = unsqueeze_layer(node.attribute[:axes])
+    (args, layer, outs)
+end
+
+mutable struct unsqueeze_layer
+    axes
+end
+
+function (u::unsqueeze_layer)(x)
+    data = [t for t in size(x)]
+    axes = [a+1 for a in u.axes]
+    for i in axes; insert!(data, i, 1); end
+    new_size = (data...,)
+    reshape(x, new_size)
+end
+
 # SQUEEZE
-function node_to_squeeze(node)
-    squeeze_layer(node.attribute[:axes])
+function converter_squeeze(node)
+    args = node.input
+    outs = node.output
+    layer = squeeze_layer(node.attribute[:axes])
+    (args, layer, outs)
 end
 
 mutable struct squeeze_layer
@@ -271,21 +310,20 @@ function (s::squeeze_layer)(x)
     reshape(x, new_size)
 end
 
-
-# UNSQUEEZE
-function node_to_unsqueeze(node)
-    unsqueeze_layer(node.attribute[:axes])
+# CONCAT
+mutable struct concat_layer
+    axis
 end
 
-mutable struct unsqueeze_layer
-    axes
+function (l::concat_layer)(args...)
+    if l.axis == 0; return vcat(args...);
+    else; return hcat(args...); end
 end
 
-
-function (u::unsqueeze_layer)(x)
-    data = [t for t in size(x)]
-    axes = [a+1 for a in u.axes]
-    for i in axes; insert!(data, i, 1); end
-    new_size = (data...,)
-    reshape(x, new_size)
+function converter_concat(node, g)
+    args = node.input
+    outs = node.output
+    axis = node.attribute[:axis]
+    layer = concat_layer(axis)
+    (args, layer, outs)
 end

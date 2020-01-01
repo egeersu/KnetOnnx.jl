@@ -105,21 +105,16 @@ function forward(km::KnetModel, ml::ModelLayer)
 
 function (m::KnetModel)(args...)
 
-    # reset model.tensors (figure out a smarter/faster reset)
+    # resets model.tensors (figure out a smarter/faster reset)
     m.tensors = TensorDict(m.model_layers, m.graph)
 
     # REGISTER X
     # dumb version
-    # check if we want multiple inputs (x should be a list) or a single input (x is a single array)
-    #if length(m.model_inputs) == 1; m.tensors[m.model_inputs[1]] = x;
-        #else; for (i,model_input) in enumerate(m.model_inputs); m.tensors[model_input] = x[i]; end; end
+
 
     for (i, arg) in enumerate(args)
         m.tensors[m.model_inputs[i]] = arg
     end
-
-
-    #m.tensors[m.model_inputs...] = x
 
     # LOOP UNTIL ALL TENSORS ARE CALCULATED
     # do until all model.tensors are filled
@@ -156,11 +151,11 @@ function PrintModelTensors(model::KnetModel)
     end
 end
 
-import Knet: Data
+#import Knet: Data
 
-(m::KnetModel)(x,y) = Knet.nll(m(x), y)
+#(m::KnetModel)(x,y) = Knet.nll(m(x), y)
 
 """
     Calling KnetModel with a Knet.Data object computes the mean nll for
 """
-(m::KnetModel)(d::Data) = Knet.mean(m(x,y) for (x,y) in d)
+#(m::KnetModel)(d::Data) = Knet.mean(m(x,y) for (x,y) in d)
