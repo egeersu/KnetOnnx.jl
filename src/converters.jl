@@ -231,21 +231,29 @@ end
 mutable struct constant_layer
     data
 end
-(l::constant_layer)() = data
+
+(l::constant_layer)() = l.data
 
 function UInt8toFloat32(val)
     dims = val.dims
     data = val.raw_data
     indices = collect(1:4:length(data))
     data_list = []
-    for i in indices; push!(data_list, get_int(data[i:i+3])); end;
-    data_list
+    for i in indices; push!(data_list, float_from_bitstring(Float32, generate_bitstring(data[i:i+3]))); end;
+    new_size = tuple(val.dims...)
+    reshape(data_list, new_size)
 end
 
-function get_int(data)
-    ints = Int32.(data)
-    c1=1; c2=1; c3=1; c4=1;
-    return c1*ints[1] + c2*ints[2] + c3*ints[3] + c4*ints[4]
+function generate_bitstring(raw_4)
+    bits = ""
+    for i in reverse(raw_4); bits *= bitstring(i); end
+    bits
+end
+
+function float_from_bitstring(::Type{T}, str::String) where {T<:Base.IEEEFloat}
+    unsignedbits = Meta.parse(string("0b", str))
+    thefloat  = reinterpret(T, unsignedbits)
+    return thefloat
 end
 
 function converter_constant(node, g)
