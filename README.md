@@ -24,7 +24,7 @@ using KnetOnnx
 model = KnetModel("vgg16.onnx");
 
 #dummy input for prediction
-x = ones(Float32,224,224,3,10)
+x = ones(224,224,3,10)
 
 #call KnetModel object with the model input
 model(x) #the output is a 1000×10 Array{Float32,2}
