@@ -35,7 +35,11 @@ function convert(node, g)
     if node.op_type == "AveragePool"; return converter_avgpool(node,g); end
     if node.op_type == "Dropout"; return converter_dropout(node,g); end
     if node.op_type == "Flatten"; return converter_flatten(node,g); end
-    if node.op_type == "RNN"; return converter_rnn(node, g); end
+    if node.op_type == "Constant"; return converter_constant(node, g); end
+    if node.op_type == "RNN"; return converter_rnn(node, g);
+    else; println("ONNX Operation not yet implemented: ", node.op_type);
+    end
+
 end
 
 
@@ -220,6 +224,34 @@ function node_to_RNN(node, g)
     hidden_size = node.attribute[:hidden_size]
 end
 
+# CONSTANT
+function UInt8toFloat32(val)
+    dims = val.dims
+    data = val.raw_data
+    indices = collect(1:4:length(data))
+    data_list = []
+    for i in indices; push!(data_list, get_int(data[i:i+3])); end;
+    data_list
+end
+
+function get_int(data)
+    ints = Int32.(data)
+    c1=1; c2=1; c3=1; c4=1;
+    return c1*ints[1] + c2*ints[2] + c3*ints[3] + c4*ints[4]
+end
+
+mutable struct constant_layer
+    data
+end
+
+(l::constant_layer)() = l.data
+
+function converter_constant(node, g)
+    args = node.input
+    outs = node.output
+    layer = constant_layer(UInt8toFloat32(node.attribute[:value]))
+    return (args, layer, outs)
+end
 
 # SQUEEZE
 function node_to_squeeze(node)
