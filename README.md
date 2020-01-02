@@ -41,13 +41,13 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 - [x] Add
 - [x] BatchNormalization
 - [x] ImageScaler
-- [ ] RNN
+- [x] RNN
 - [x] Unsqueeze
 - [x] Squeeze
 - [x] Concatenate
 - [x] ConstantOfShape
 - [x] Shape
-- [ ] Constant
+- [x] Constant
 
 ## Collaboration
 Here are some cool ideas if you want to collaborate:
