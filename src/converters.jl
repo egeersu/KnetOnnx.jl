@@ -240,8 +240,12 @@ function UInt8toFloat32(val)
     indices = collect(1:4:length(data))
     data_list = []
     for i in indices; push!(data_list, float_from_bitstring(Float32, generate_bitstring(data[i:i+3]))); end;
-    new_size = tuple(val.dims...)
-    reshape(data_list, new_size)
+    if length(val.dims) != 0
+        new_size = tuple(val.dims...)
+        data_list = reshape(data_list, new_size)
+    end
+    #cast to Float32 (migth adjust this later)
+    return Float32.(data_list)
 end
 
 function generate_bitstring(raw_4)
