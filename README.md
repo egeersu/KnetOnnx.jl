@@ -1,4 +1,4 @@
-<img src="https://github.com/onnx/onnx/blob/master/docs/ONNX_logo_main.png?raw=true" width="400">
+<img src="https://github.com/egeersu/KnetOnnx.jl/blob/master/test/onnx_figure.png" width="400">
 
 KnetOnnx reads an ONNX file and creates the corresponding Model in Knet that can be re-designed, re-trained or simply used for inference.
 
