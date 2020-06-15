@@ -53,11 +53,11 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 Here are some cool ideas if you want to collaborate:
 - Export functionality. This could be done in one of 3 ways:
 
-	- (1)  By only exporting models that are impelemented as a [KnetModel](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/KnetModel.jl). These models have to use [KnetLayers](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers), so one could implement functions that convert KnetLayers into strings. These strings would then be combined to construct the model.onnx file. The structure of the model (inputs, outputs, connections) can also be inferred from the KnetModel.
+	- (1) By only exporting models that are impelemented as a [KnetModel](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/KnetModel.jl). These models have to use [KnetLayers](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers), so one could implement functions that convert KnetLayers into strings. These strings would then be combined to construct the model.onnx file. The structure of the model (inputs, outputs, connections) can be inferred from the KnetModel.
 
-	- (2) By running a dummy input through the model and then collecting the Julia operations. These more primitive operations could then be turned into strings and combined according to the order of operations.
+	- (2) By running a dummy input through the model and then collecting the Julia operations. These more primitive operations could then be turned into strings and combined according to the order of operations. This would be a completely novel project and does not depend on anything implemented by this package.
 
-	- (3) A hybrid approach. Use (1) for KnetModels & models that make use of KnetLayers. Use (2) for unknown layers/operations. 
+	- (3) A hybrid approach. Use (1) for KnetModels & functions that make use of KnetLayers. Use (2) if the layers/operations being used are unknown. 
 
 - Adding a new [KnetLayer](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers)
 - Adding a new [Converter](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl) ([ONNX Operator](https://github.com/onnx/onnx/blob/master/docs/Operators.md) -> [KnetLayer](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers))
@@ -65,5 +65,6 @@ Here are some cool ideas if you want to collaborate:
 - Trying to import your models from [ONNX-complete frameworks.](https://onnx.ai/supported-tools.html#buildModel) 
 - Writing tests for [KnetLayers](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers) and [Converters.](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl)
 - Adding Type Constraints to converters. (See [Onnx Operators](https://github.com/onnx/onnx/blob/master/docs/Operators.md) for more info)
+- [ONNX RUNTIME](https://microsoft.github.io/onnxruntime/) (advanced)
 
 If you want to better understand the structure of this package, please read our [Technical Report](https://github.com/egeersu/KnetOnnx.jl/blob/master/KnetOnnx-Report.pdf).
