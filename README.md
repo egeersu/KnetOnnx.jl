@@ -41,7 +41,7 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 - [x] Add
 - [x] BatchNormalization
 - [x] ImageScaler
-- [?] RNN
+- [x] RNN
 - [x] Unsqueeze
 - [x] Squeeze
 - [x] Concatenate
@@ -51,7 +51,18 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 
 ## Collaboration
 Here are some cool ideas if you want to collaborate:
-- Export functionality. This would be a tough problem so feel free to get in contact.
-- Adding a new [KnetLayer.](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers)
-- Adding a new [Converter:](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl) (ONNX Operator -> KnetLayer)
+- Export functionality. This could be done in one of two ways: 
+(1) By only exporting models that are impelemented as a [KnetModel](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/KnetModel.jl). These models have to use [KnetLayers](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers), so one could implement functions that convert KnetLayers into strings. These strings would then be combined to construct the model.onnx file. The structure of the model (inputs, outputs, connections) can also be inferred from the KnetModel.
+
+(2) By running a dummy input through the model and then collecting the Julia operations. These more primitive operations could then be turned into strings and combined according to the order of operations.
+
+(3) A hybrid approach. Use (1) for KnetModels & models that make use of KnetLayers. Use (2) for unknown layers/operations. 
+
+- Adding a new [KnetLayer](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers)
+- Adding a new [Converter](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl) ([ONNX Operator](https://github.com/onnx/onnx/blob/master/docs/Operators.md) -> [KnetLayer](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers))
 - Testing ONNX models from the [zoo](https://github.com/onnx/models) and sending bug reports.
+- Writing tests for KnetLayers and Converters.
+- Downloading and testing new models.
+- Adding Type Constraints to converters. See [Onnx Operators](https://github.com/onnx/onnx/blob/master/docs/Operators.md) for more info. 
+
+If you want to better understand the structure of this package, please read our [Technical Report](https://github.com/egeersu/KnetOnnx.jl/blob/master/KnetOnnx-Report.pdf).
