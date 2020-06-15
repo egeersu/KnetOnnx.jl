@@ -2,6 +2,8 @@
   <img src="https://github.com/egeersu/KnetOnnx.jl/blob/master/test/onnx_figure.png" />
 </p>
 
+## The Basics
+
 KnetOnnx reads an ONNX file and creates the corresponding Model in Knet that can be re-designed, re-trained or simply used for inference.
 
 If you are planning to move your models from PyTorch or Tensorflow to Knet, or simply desiring to play with popular pre-trained neural networks: KnetOnnx provides that functionality.
