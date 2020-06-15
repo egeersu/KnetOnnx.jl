@@ -31,7 +31,7 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 ```
 
 Check out our [tutorial notebooks](http://localhost:8888/tree/test/tutorials) to learn how you can transfer your models from PyTorch to Knet: 
-> [MLP](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_MLP.ipynb) - [CNN](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_CNN.ipynb) - [VGG16])(https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/VGG.ipynb)
+> [MLP](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_MLP.ipynb) - [CNN](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_CNN.ipynb) - [VGG16](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/VGG.ipynb)
 
 ## Supported Operations
 - [x] ReLU
