@@ -70,7 +70,7 @@ Here are some cool ideas if you want to collaborate:
 - Downloading & testing ONNX models from the [zoo](https://github.com/onnx/models) and sending bug reports.
 - Trying to import your models from [ONNX-complete frameworks.](https://onnx.ai/supported-tools.html#buildModel) 
 - Writing tests for [KnetLayers](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers) and [Converters.](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl)
-- Adding Type Constraints to converters. (See [Onnx Operators](https://github.com/onnx/onnx/blob/master/docs/Operators.md) for more info)
+- Adding Type Constraints to converters. (See [ONNX Operators](https://github.com/onnx/onnx/blob/master/docs/Operators.md) for more info)
 - [ONNX RUNTIME](https://microsoft.github.io/onnxruntime/) (advanced)
 
 > If you want to better understand the structure of this package, please read our [Technical Report](https://github.com/egeersu/KnetOnnx.jl/blob/master/KnetOnnx-Report.pdf).
