@@ -41,7 +41,7 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 - [x] Add
 - [x] BatchNormalization
 - [x] ImageScaler
-- [x] RNN
+- [?] RNN
 - [x] Unsqueeze
 - [x] Squeeze
 - [x] Concatenate
