@@ -30,6 +30,8 @@ x = ones(224,224,3,10)
 model(x) #the output is a 1000×10 Array{Float32,2}
 ```
 
+Check out our tutorial notebooks to see how you can transfer your models from PyTorch to Knet: [MLP] - [CNN] - [VGG16]
+
 ## Supported Operations
 - [x] ReLU
 - [x] LeakyReLU
@@ -67,4 +69,4 @@ Here are some cool ideas if you want to collaborate:
 - Adding Type Constraints to converters. (See [Onnx Operators](https://github.com/onnx/onnx/blob/master/docs/Operators.md) for more info)
 - [ONNX RUNTIME](https://microsoft.github.io/onnxruntime/) (advanced)
 
-If you want to better understand the structure of this package, please read our [Technical Report](https://github.com/egeersu/KnetOnnx.jl/blob/master/KnetOnnx-Report.pdf).
+> If you want to better understand the structure of this package, please read our [Technical Report](https://github.com/egeersu/KnetOnnx.jl/blob/master/KnetOnnx-Report.pdf).
