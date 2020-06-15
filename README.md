@@ -16,6 +16,8 @@ Although not all operations are implemented yet, visit ONNX's [model zoo](https:
 Once you download the ONNX file, call KnetModel() with the ONNX file's path to create the model.
 
 ## Tutorial
+Check out our [tutorial notebooks](http://localhost:8888/tree/test/tutorials) to learn how you can transfer your models from PyTorch to Knet: 
+> [MLP](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_MLP.ipynb) - [CNN](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_CNN.ipynb) - [VGG16](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/VGG.ipynb)
 
 Here is how you create the Knet model corresponding to an ONNX file and perform a forward pass:
 
@@ -31,9 +33,6 @@ x = ones(224,224,3,10)
 #call KnetModel object with the model input
 model(x) #the output is a 1000×10 Array{Float32,2}
 ```
-
-Check out our [tutorial notebooks](http://localhost:8888/tree/test/tutorials) to learn how you can transfer your models from PyTorch to Knet: 
-> [MLP](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_MLP.ipynb) - [CNN](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_CNN.ipynb) - [VGG16](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/VGG.ipynb)
 
 ## Supported Operations
 - [x] ReLU
