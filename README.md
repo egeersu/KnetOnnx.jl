@@ -61,9 +61,8 @@ Here are some cool ideas if you want to collaborate:
 
 - Adding a new [KnetLayer](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers)
 - Adding a new [Converter](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl) ([ONNX Operator](https://github.com/onnx/onnx/blob/master/docs/Operators.md) -> [KnetLayer](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers))
-- Testing ONNX models from the [zoo](https://github.com/onnx/models) and sending bug reports.
+- Downloading & testing ONNX models from the [zoo](https://github.com/onnx/models) and sending bug reports.
 - Writing tests for KnetLayers and Converters.
-- Downloading and testing new models.
 - Adding Type Constraints to converters. (See [Onnx Operators](https://github.com/onnx/onnx/blob/master/docs/Operators.md) for more info.)
 
 If you want to better understand the structure of this package, please read our [Technical Report](https://github.com/egeersu/KnetOnnx.jl/blob/master/KnetOnnx-Report.pdf).
