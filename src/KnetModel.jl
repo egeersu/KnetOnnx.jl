@@ -8,8 +8,8 @@
     * model_inputs: returns the list of inputs (the names of the tensors)
 
     * model_outputs: returns the list of outputs (the names of the outputs)
-
 """
+
 mutable struct KnetModel
     tensors #dictionary: string -> tensor
     model_layers
@@ -18,10 +18,11 @@ mutable struct KnetModel
     graph
 end
 
-"""
-Given a Graph, construct the corresponding KnetModel
-"""
 function KnetModel(g::KnetOnnx.Types.Graph)
+    """
+    KnetModel constructor.
+    Uses the Graph.
+    """
     model_layers = get_ModelLayers(g)
     tensors = TensorDict(model_layers, g)
     model_inputs = [i.name for i in g.input]
@@ -31,6 +32,10 @@ function KnetModel(g::KnetOnnx.Types.Graph)
 end
 
 function KnetModel(path::String)
+    """
+    KnetModel constructor #2
+    Uses the path of the ONNX file.
+    """
     KnetModel(ONNXtoGraph(path))
 end
 

@@ -1,13 +1,18 @@
 KL = include("./KnetLayers/src/KnetLayers.jl")
+onnx_utils = include("./onnx_utils.jl")
 
-# ONNX file path -> Graph
 function ONNXtoGraph(file)
+    """
+    Given the path of an ONNX file, construct its graph.
+    """
     f = readproto(open(file), Proto.ModelProto());
     convert(f).graph
 end
 
-# Prints the Graph in a pretty format
 function PrintGraph(g)
+    """
+    Prints the ONNX graph.
+    """
     println("model inputs: ", (x->x.name).(g.input))
     println("model outputs: ", (x->x.name).(g.output))
     for (i, node) in enumerate(g.node)
@@ -22,10 +27,10 @@ function PrintGraph(g)
     end
 end
 
-"""
-Given a node, calls the appropriate constructor for the corresponding (args, layer, outs)
-"""
 function convert(node, g)
+    """
+    Given a node, calls the appropriate constructor for the corresponding (args, layer, outs)
+    """
     if node.op_type == "Gemm"; return converter_gemm(node, g); end
     if node.op_type == "Add"; return converter_add(node, g); end
     if node.op_type == "Relu"; return converter_relu(node, g); end
@@ -40,17 +45,25 @@ function convert(node, g)
     if node.op_type == "Squeeze"; return converter_squeeze(node, g); end
     if node.op_type == "Unsqueeze"; return converter_unsqueeze(node,g); end
     if node.op_type == "Concat"; return converter_concat(node,g); end
+    if node.op_type == "Gather"; return converter_gather(node,g); end
+    if node.op_type == "ConstantOfShape"; return converter_ConstantOfShape(node, g); end
     if node.op_type == "RNN"; return converter_rnn(node, g);
     else; println("ONNX Operation not yet implemented: ", node.op_type);
     end
 
 end
 
+# Unit Layer for Testing
+struct dummy_layer
+end
+(d::dummy_layer)(x) = x
+
+
 function converter_rnn(node, g)
-    1
+    return (node.input, dummy_layer(), node.output)
 end
 
-## TODO: convert all onnx params to knet params (use convert_params(w))
+# TODO: convert all onnx params to knet params (use convert_params(w))
 """
 Converters Begin Here
 # A converter's inputs: graph node and the graph
@@ -58,11 +71,9 @@ Converters Begin Here
     # - args:  the names of the tensors that will be needed for the calculations. These are just the names: strings.
     # - layer: a KnetLayer will be constructed. If the weights are in the initializer, the layer will be modified with them.
     # - outs:  the names of the tensors that are the outputs of the calculations. These are just the names: strings.
-
 """
 
 # GEMM - trains bias also for gemm that is not a linear layer, fix that, write new gemm and a separate linear
-
 function converter_gemm(node, g)
     input1 = node.input[1]
 
@@ -91,15 +102,11 @@ function converter_gemm(node, g)
     (args, layer, node.output)
 end
 
-# ADD - done
-# move this to KnetLayers
-struct AddLayer; end
-(a::AddLayer)(x,y) = x+y
-
+# ADD
 function converter_add(node, g)
     args = node.input
     outs = node.output
-    layer = AddLayer()
+    layer = KL.Add()
     return (args, layer, outs)
 end
 
@@ -150,7 +157,7 @@ function converter_cnn(node, g)
 end
 
 # MaxPool
-#currently treating [1,1,1,1] padding as an integer 1, same for stride
+#currently treating [1,1,1,1] padding as an integer 1, same for
 function converter_maxpool(node, g)
     args = node.input
     outs = node.output
@@ -186,7 +193,6 @@ function converter_dropout(node, g)
     (args, layer, outs)
 end
 
-
 # FLATTEN
 function converter_flatten(node, g)
     args = node.input
@@ -212,130 +218,76 @@ end
 
 
 # IMAGE SCALER
-
 function node_to_imagescaler(node, g)
     bias = node.attribute[:bias]
     scale = node.attribute[:scale]
     #ScalerLayer(x) = scale .* x
 end
 
-
 # RNN
-
 function node_to_RNN(node, g)
     activations = node.attribute[:activations]
     hidden_size = node.attribute[:hidden_size]
 end
 
-# CONSTANT
-mutable struct constant_layer
-    data
-end
-
-(l::constant_layer)() = l.data
-
-function UInt8toFloat32(val)
-    dims = val.dims
-    data = val.raw_data
-    indices = collect(1:4:length(data))
-    data_list = []
-    for i in indices; push!(data_list, float_from_bitstring(Float32, generate_bitstring(data[i:i+3]))); end;
-    if length(val.dims) != 0
-        new_size = tuple(val.dims...)
-        data_list = reshape(data_list, new_size)
-    end
-    #cast to Float32 (migth adjust this later)
-    return Float32.(data_list)
-end
-
-function generate_bitstring(raw_4)
-    bits = ""
-    for i in reverse(raw_4); bits *= bitstring(i); end
-    bits
-end
-
-function float_from_bitstring(::Type{T}, str::String) where {T<:Base.IEEEFloat}
-    unsignedbits = Meta.parse(string("0b", str))
-    thefloat  = reinterpret(T, unsignedbits)
-    return thefloat
-end
-
+# CONSTANT
 function converter_constant(node, g)
     args = node.input
     outs = node.output
-    layer = constant_layer(UInt8toFloat32(node.attribute[:value]))
+    onnx_constant_value = node.attribute[:value]
+    julia_constant_value = onnx_utils.UInt8toFloat32(onnx_constant_value)
+    layer = KL.constant_layer(julia_constant_value)
     return (args, layer, outs)
 end
 
 # SHAPE
-mutable struct shape_layer
-end
-
-(l::shape_layer)(x) = size(x)
-
 function converter_shape(node, g)
     args = node.input
     outs = node.output
-    layer = shape_layer()
+    layer = KL.shape_layer()
     (args, layer, outs)
 end
-
 
 # UNSQUEEZE
-function converter_unsqueeze(node)
+function converter_unsqueeze(node, g)
     args = node.input
     outs = node.output
-    layer = unsqueeze_layer(node.attribute[:axes])
+    layer = KL.unsqueeze_layer(node.attribute[:axes])
     (args, layer, outs)
-end
-
-mutable struct unsqueeze_layer
-    axes
-end
-
-function (u::unsqueeze_layer)(x)
-    data = [t for t in size(x)]
-    axes = [a+1 for a in u.axes]
-    for i in axes; insert!(data, i, 1); end
-    new_size = (data...,)
-    reshape(x, new_size)
 end
 
 # SQUEEZE
-function converter_squeeze(node)
+function converter_squeeze(node, g)
     args = node.input
     outs = node.output
-    layer = squeeze_layer(node.attribute[:axes])
+    layer = KL.squeeze_layer(node.attribute[:axes])
     (args, layer, outs)
 end
 
-mutable struct squeeze_layer
-    axes
-end
-
-function (s::squeeze_layer)(x)
-    new_size = []
-    for (i, dim) in enumerate(size(x))
-        if dim>1; push!(new_size, dim); end
-    end
-    new_size = (new_size...,)
-    reshape(x, new_size)
-end
-
 # CONCAT
-mutable struct concat_layer
-    axis
-end
-
-function (l::concat_layer)(args...)
-    if l.axis == 0; return vcat(args...);
-    else; return hcat(args...); end
-end
-
 function converter_concat(node, g)
     args = node.input
     outs = node.output
     axis = node.attribute[:axis]
-    layer = concat_layer(axis)
+    layer = KL.Concat(axis)
+    (args, layer, outs)
+end
+
+# Gather
+function converter_gather(node, g)
+    args = node.input
+    outs = node.output
+    axis = node.attribute[:axis] +1 #+1 is for Julia
+    layer = KL.Gather(axis)
+    (args, layer, outs)
+end
+
+#
+function converter_ConstantOfShape(node, g)
+    args = node.input
+    outs = node.output
+    onnx_constant_value = node.attribute[:value]
+    julia_constant_value = onnx_utils.UInt8toFloat32(onnx_constant_value)
+    layer = KL.ConstantOfShape(julia_constant_value[1])
     (args, layer, outs)
 end

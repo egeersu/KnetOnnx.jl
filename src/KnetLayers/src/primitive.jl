@@ -63,7 +63,7 @@ Embed = Multiply
 Gemm
 """
 
-mutable struct Gemm 
+mutable struct Gemm
     alpha
     beta
     transA
@@ -74,7 +74,7 @@ end
 function (g::Gemm)(A, B, C)
     if g.transA != 0; A = transpose(A); end
     if g.transB != 0; B = transpose(B); end
-    g.alpha * A * B + (g.beta * C)    
+    g.alpha * A * B + (g.beta * C)
 end
 
 """
@@ -178,3 +178,12 @@ function (f::Flatten)(x)
     end
 end
 
+"""
+Adds any number of inputs together. (up to 4 atm)
+Doesn't check size or type.
+"""
+struct Add; end
+(a::Add)(x) = x
+(a::Add)(x,y) = x+y
+(a::Add)(x,y,z) = x+y+z
+(a::Add)(x,y,z,t) = x+y+z+t

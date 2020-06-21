@@ -39,14 +39,14 @@ Prm(x)=Param(atype(x));   export Prm
 
 
 include("core.jl");
-include("primitive.jl");   export Multiply, Embed, Linear, Dense, BatchNorm, Flatten, Gemm
+include("primitive.jl");   export Multiply, Embed, Linear, Dense, BatchNorm, Flatten, Gemm, Add
 include("nonlinear.jl");   export ReLU,Sigm,Tanh,LeakyReLU,ELU,Dropout,LogSoftMax,SoftMax,LogSumExp
 include("loss.jl");        export CrossEntropyLoss, BCELoss, LogisticLoss
 include("cnn.jl");         export Pool,UnPool,DeConv,Conv
 include("special.jl");     export MLP
 include("rnn.jl");         export RNN,SRNN,LSTM,GRU,RNNOutput,PadRNNOutput,PadSequenceArray
 include("chain.jl");       export Chain
-include("onnxlayers.jl");  export ConvertParams
+include("onnxlayers.jl");  export constant_layer, ConvertParams, squeeze_layer, unsqueeze_layer, Gather, Concat, ConstantOfShape
 include("../data/IndexedDict.jl");
 
 
