@@ -45,16 +45,19 @@ struct Gather
 end
 
 function (g::Gather)(data, indices)
+
+    return data # for testing only
+
     indices_size = size(indices)
 
     indices = (x->(x+1)).(indices) # increment for Julia
     indices = (x->(Int32(x))).(indices) # set floats to Int for bug-free indexing
 
     if length(indices_size) == 1
-        return gather_rank1(data, indices)
+        return gather_rank1(data, indices, g)
     end
     if length(indices_size) == 2
-        return gather_rank2(data, indices)
+        return gather_rank2(data, indices, g)
     end
     if length(indices_size) > 2
         print("Gather for indices with rank > 2 are not implemented yet.")
@@ -62,20 +65,19 @@ function (g::Gather)(data, indices)
 end
 
 
-function gather_rank1(data, indices)
+function gather_rank1(data, indices, layer)
     new_data = []
     axis1 = size(indices)[1]
-
     for a1 in (1:axis1)
         current_index = indices[a1]
         #get_data = data[:,current_index]
-        get_data = data[:,current_index]
+        get_data = data[current_index, layer.axis]
         push!(new_data, get_data)
     end
     new_data
 end
 
-function gather_rank2(data, indices)
+function gather_rank2(data, indices, layer)
     new_data = []
     axis1, axis2 = size(indices)
 

@@ -10,11 +10,11 @@ class model_constant(nn.Module):
         super(model_constant, self).__init__()
 
     def forward(self, x1):
-        return x1[0,:]
+        return x1[1,2]
 
 model = model_constant()
 
-x1 = torch.tensor([[1,2,3],[4,5,6]])
+x1 = torch.tensor([[1,2,3], [4,5,6]])
 y1 = model(x1)
 
 print("y1: ", y1)

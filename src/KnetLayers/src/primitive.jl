@@ -179,11 +179,8 @@ function (f::Flatten)(x)
 end
 
 """
-Adds any number of inputs together. (up to 4 atm)
+Adds any number of inputs together.
 Doesn't check size or type.
 """
 struct Add; end
-(a::Add)(x) = x
-(a::Add)(x,y) = x+y
-(a::Add)(x,y,z) = x+y+z
-(a::Add)(x,y,z,t) = x+y+z+t
+(a::Add)(args...) = +(args...)
