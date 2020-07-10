@@ -82,7 +82,7 @@ function converter_gemm(node, g)
 
     # use g.initializer to modify KnetLayer
     w_name = node.input[2]
-    b_name = node.input[3]
+    b_name = length(node.input) >= 3 ? node.input[3] : 0
     w = g.initializer[w_name]
     w = transpose(w)
     b = g.initializer[b_name]
@@ -277,7 +277,7 @@ end
 function converter_gather(node, g)
     args = node.input
     outs = node.output
-    axis = node.attribute[:axis] +1 #+1 is for Julia
+    axis = node.attribute[:axis] == nothing ? 1 : node.attribute[:axis] + 1 #+1 is for Julia
     layer = KL.Gather(axis)
     (args, layer, outs)
 end
