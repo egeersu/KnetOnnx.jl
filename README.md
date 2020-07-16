@@ -59,6 +59,8 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 - [x] Sub
 - [x] Exp
 - [x] Transpose
+- [x] Reshape
+
 
 ## Collaboration
 Here are some cool ideas if you want to collaborate:

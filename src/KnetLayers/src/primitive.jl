@@ -214,3 +214,8 @@ struct Transpose
     perm
 end
 (t::Transpose)(A) = permutedims(A, t.perm)
+
+struct Reshape
+    shape
+end
+(r::Reshape)(A) = reshape(A, r.shape)

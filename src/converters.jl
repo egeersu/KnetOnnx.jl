@@ -46,6 +46,7 @@ function convert(node, g)
     if node.op_type == "MaxPool"; return converter_maxpool(node,g); end
     if node.op_type == "Mul"; return converter_mul(node,g); end
     if node.op_type == "Relu"; return converter_relu(node, g); end
+    if node.op_type == "Reshape"; return converter_reshape(node, g); end
     if node.op_type == "RNN"; return converter_rnn(node, g);
     if node.op_type == "Shape"; return converter_shape(node, g); end
     if node.op_type == "Softmax"; return converter_softmax(node, g); end
@@ -265,6 +266,17 @@ end
 function converter_relu(node, g)
     args = node.input
     layer = KL.ReLU()
+    outs = node.output
+    (args, layer, outs)
+end
+
+"""
+Reshape
+"""
+function converter_reshape(node, g)
+    data = node.input[1]
+    shape = node.input[2]
+    layer = KL.Reshape(shape)
     outs = node.output
     (args, layer, outs)
 end
