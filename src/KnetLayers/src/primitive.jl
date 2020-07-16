@@ -184,3 +184,12 @@ Doesn't check size or type.
 """
 struct Add; end
 (a::Add)(args...) = +(args...)
+
+
+"""
+Mul
+Performs element-wise binary multiplication (with Numpy-style broadcasting support).
+This operator supports multidirectional (i.e., Numpy-style) broadcasting; for more details please check the doc.
+"""
+struct Mul; end
+(m::Mul)(A, B) = A .* B

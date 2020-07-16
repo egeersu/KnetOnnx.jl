@@ -43,6 +43,7 @@ function convert(node, g)
     if node.op_type == "Gemm"; return converter_gemm(node, g); end
     if node.op_type == "LeakyRelu"; return converter_leakyrelu(node,g); end
     if node.op_type == "MaxPool"; return converter_maxpool(node,g); end
+    if node.op_type == "Mul"; return converter_mul(node,g); end
     if node.op_type == "Relu"; return converter_relu(node, g); end
     if node.op_type == "RNN"; return converter_rnn(node, g);
     if node.op_type == "Shape"; return converter_shape(node, g); end
@@ -227,6 +228,16 @@ function converter_maxpool(node, g)
     if :strides in keys(node.attribute); stride = node.attribute[:strides][1]; end
 
     layer = KL.Pool(padding=padding, stride=stride, mode=0)
+    (args, layer, outs)
+end
+
+"""
+Mul Converter
+"""
+function converter_mul(node,g)
+    args = node.input
+    layer = KL.Mul()
+    outs = node.output
     (args, layer, outs)
 end
 
