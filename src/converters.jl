@@ -51,6 +51,7 @@ function convert(node, g)
     if node.op_type == "Softmax"; return converter_softmax(node, g); end
     if node.op_type == "Sub"; return converter_sub(node,g); end
     if node.op_type == "Squeeze"; return converter_squeeze(node, g); end
+    if node.op_type == "Transpose"; return converter_transpose(node,g); end
     if node.op_type == "Unsqueeze"; return converter_unsqueeze(node,g); end
     else; println("ONNX Operation not yet implemented: ", node.op_type);
     end
