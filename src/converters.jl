@@ -257,6 +257,17 @@ function converter_shape(node, g)
     (args, layer, outs)
 end
 
+"""
+SoftMax
+The operator computes the softmax (normalized exponential) values for each layer in the batch of the given input.
+"""
+function converter_softmax(node, g)
+    args = node.input
+    axis = node.attribute[:axis] == nothing ? 1 : node.attribute[:axis] # default axis = 1
+    layer = KL.SoftMax(axis)
+    output = node.output
+end
+
 # SQUEEZE
 function converter_squeeze(node, g)
     args = node.input
