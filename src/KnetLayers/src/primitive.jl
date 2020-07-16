@@ -199,3 +199,10 @@ Performs element-wise binary division (with Numpy-style broadcasting support).
 """
 struct Div; end
 (d::Div)(A, B) = A ./ B
+
+"""
+Sub
+Performs element-wise binary subtraction (with Numpy-style broadcasting support).
+"""
+struct Sub; end
+(s::Sub)(A, B) = A .- B
