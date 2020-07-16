@@ -47,6 +47,7 @@ function convert(node, g)
     if node.op_type == "Relu"; return converter_relu(node, g); end
     if node.op_type == "RNN"; return converter_rnn(node, g);
     if node.op_type == "Shape"; return converter_shape(node, g); end
+    if node.op_type == "Softmax"; return converter_softmax(node, g); end
     if node.op_type == "Squeeze"; return converter_squeeze(node, g); end
     if node.op_type == "Unsqueeze"; return converter_unsqueeze(node,g); end
     else; println("ONNX Operation not yet implemented: ", node.op_type);
