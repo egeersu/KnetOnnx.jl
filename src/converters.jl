@@ -306,6 +306,13 @@ function converter_squeeze(node, g)
     (args, layer, outs)
 end
 
+function converter_transpose(node, g)
+    args = node.input
+    outs = node.output
+    layer = KL.Transpose(node.attribute[:perm] .+ 1) # +1 for julia index
+    (args, layer, outs)
+end
+
 # UNSQUEEZE
 function converter_unsqueeze(node, g)
     args = node.input

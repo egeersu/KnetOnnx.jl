@@ -209,3 +209,8 @@ struct Sub; end
 
 struct Exp; end
 (e::Exp)(A) = A.^2
+
+struct Transpose
+    perm
+end
+(t::Transpose)(A) = permutedims(A, t.perm)
