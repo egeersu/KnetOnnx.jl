@@ -37,6 +37,7 @@ function convert(node, g)
     if node.op_type == "Constant"; return converter_constant(node, g); end
     if node.op_type == "ConstantOfShape"; return converter_ConstantOfShape(node, g); end
     if node.op_type == "Conv"; return converter_cnn(node,g); end
+    if node.op_type == "Div"; return converter_div(node,g); end
     if node.op_type == "Dropout"; return converter_dropout(node,g); end
     if node.op_type == "Flatten"; return converter_flatten(node,g); end
     if node.op_type == "Gather"; return converter_gather(node,g); end
@@ -151,6 +152,14 @@ function converter_cnn(node, g)
         layer.bias = reshape(b, 1, 1, size(b)[1], 1)
     end
     (args, layer, out)
+end
+
+#Div
+function converter_div(node, g)
+    args = node.input
+    outs = node.output
+    layer = KL.Div()
+    (args, layer, outs)
 end
 
 # DROPOUT

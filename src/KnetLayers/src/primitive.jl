@@ -189,7 +189,13 @@ struct Add; end
 """
 Mul
 Performs element-wise binary multiplication (with Numpy-style broadcasting support).
-This operator supports multidirectional (i.e., Numpy-style) broadcasting; for more details please check the doc.
 """
 struct Mul; end
 (m::Mul)(A, B) = A .* B
+
+"""
+Div
+Performs element-wise binary division (with Numpy-style broadcasting support).
+"""
+struct Div; end
+(d::Div)(A, B) = A ./ B
