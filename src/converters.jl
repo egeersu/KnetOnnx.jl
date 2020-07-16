@@ -289,13 +289,6 @@ function node_to_batchnorm(node, g)
     KL.BatchNorm(length(scale); momentum=momentum, mean=mean, var=variance)
 end
 
-# IMAGE SCALER
-function node_to_imagescaler(node, g)
-    bias = node.attribute[:bias]
-    scale = node.attribute[:scale]
-    #ScalerLayer(x) = scale .* x
-end
-
 # RNN
 function node_to_RNN(node, g)
     activations = node.attribute[:activations]
