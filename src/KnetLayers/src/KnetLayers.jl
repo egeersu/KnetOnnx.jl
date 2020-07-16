@@ -39,7 +39,7 @@ Prm(x)=Param(atype(x));   export Prm
 
 
 include("core.jl");
-include("primitive.jl");   export Multiply, Embed, Linear, Dense, BatchNorm, Flatten, Gemm, Add, Mul, Div, Sub
+include("primitive.jl");   export Multiply, Embed, Linear, Dense, BatchNorm, Flatten, Gemm, Add, Mul, Div, Sub, Exp
 include("nonlinear.jl");   export ReLU,Sigm,Tanh,LeakyReLU,ELU,Dropout,LogSoftMax,SoftMax,LogSumExp
 include("loss.jl");        export CrossEntropyLoss, BCELoss, LogisticLoss
 include("cnn.jl");         export Pool,UnPool,DeConv,Conv

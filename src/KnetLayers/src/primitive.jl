@@ -206,3 +206,6 @@ Performs element-wise binary subtraction (with Numpy-style broadcasting support)
 """
 struct Sub; end
 (s::Sub)(A, B) = A .- B
+
+struct Exp; end
+(e::Exp)(A) = A.^2

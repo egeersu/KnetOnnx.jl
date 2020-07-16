@@ -56,6 +56,8 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 - [x] Constant
 - [x] Mul
 - [x] SoftMax
+- [x] Sub
+- [x] Exp
 
 ## Collaboration
 Here are some cool ideas if you want to collaborate:

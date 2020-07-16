@@ -171,6 +171,14 @@ function converter_dropout(node, g)
     (args, layer, outs)
 end
 
+# Exponential
+function converter_exp(node, g)
+    args = node.input
+    outs = node.output
+    layer = KL.Exp()
+    (args, layer, outs)
+end
+
 # FLATTEN
 function converter_flatten(node, g)
     args = node.input
