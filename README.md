@@ -18,7 +18,7 @@ Although not all operations are implemented yet, visit ONNX's [model zoo](https:
 Once you download the ONNX file, call KnetModel() with the ONNX file's path to create the model.
 
 ## Tutorial
-Check out our [tutorial notebooks](http://localhost:8888/tree/test/tutorials) to learn how you can transfer your models from PyTorch to Knet: 
+Check out our [tutorial notebooks](http://localhost:8888/tree/test/tutorials) to learn how you can transfer your models from PyTorch to Knet:
 > [MLP](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_MLP.ipynb) - [CNN](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/Knet_CNN.ipynb) - [VGG16](https://github.com/egeersu/KnetOnnx.jl/blob/master/test/tutorials/VGG.ipynb)
 
 Here is how you create the Knet model corresponding to an ONNX file and perform a forward pass:
@@ -54,6 +54,8 @@ model(x) #the output is a 1000×10 Array{Float32,2}
 - [x] ConstantOfShape
 - [x] Shape
 - [x] Constant
+- [x] Mul
+- [x] SoftMax
 
 ## Collaboration
 Here are some cool ideas if you want to collaborate:
@@ -63,12 +65,12 @@ Here are some cool ideas if you want to collaborate:
 
 	- (2) By running a dummy input through the model and then collecting the Julia operations. These more primitive operations could then be turned into strings and combined according to the order of operations. This would be a completely novel project and does not depend on anything implemented by this package.
 
-	- (3) A hybrid approach. Use (1) for KnetModels & functions that make use of KnetLayers. Use (2) if the layers/operations being used are unknown. 
+	- (3) A hybrid approach. Use (1) for KnetModels & functions that make use of KnetLayers. Use (2) if the layers/operations being used are unknown.
 
 - Adding a new [KnetLayer](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers)
 - Adding a new [Converter](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl) ([ONNX Operator](https://github.com/onnx/onnx/blob/master/docs/Operators.md) -> [KnetLayer](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers))
 - Downloading & testing ONNX models from the [zoo](https://github.com/onnx/models) and sending bug reports.
-- Trying to import your models from [ONNX-complete frameworks.](https://onnx.ai/supported-tools.html#buildModel) 
+- Trying to import your models from [ONNX-complete frameworks.](https://onnx.ai/supported-tools.html#buildModel)
 - Writing tests for [KnetLayers](https://github.com/egeersu/KnetOnnx.jl/tree/master/src/KnetLayers) and [Converters.](https://github.com/egeersu/KnetOnnx.jl/blob/master/src/converters.jl)
 - Adding Type Constraints to converters. (See [ONNX Operators](https://github.com/onnx/onnx/blob/master/docs/Operators.md) for more info)
 - [ONNX RUNTIME](https://microsoft.github.io/onnxruntime/) (advanced)
