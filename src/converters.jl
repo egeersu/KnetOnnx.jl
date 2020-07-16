@@ -275,7 +275,8 @@ function converter_softmax(node, g)
     args = node.input
     axis = node.attribute[:axis] == nothing ? 1 : node.attribute[:axis] # default axis = 1
     layer = KL.SoftMax(axis)
-    output = node.output
+    outs = node.output
+    (args, layer, outs)
 end
 
 # SQUEEZE
