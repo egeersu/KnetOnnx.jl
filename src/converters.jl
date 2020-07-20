@@ -33,6 +33,7 @@ function convert(node, g)
     """
     if node.op_type == "Add"; return converter_add(node, g); end
     if node.op_type == "AveragePool"; return converter_avgpool(node,g); end
+    if node.op_type == "BatchNormalization"; return converter_batchnorm(node, g); end
     if node.op_type == "Concat"; return converter_concat(node,g); end
     if node.op_type == "Constant"; return converter_constant(node, g); end
     if node.op_type == "ConstantOfShape"; return converter_ConstantOfShape(node, g); end
@@ -99,6 +100,21 @@ function converter_avgpool(node, g)
     layer = KL.Pool(padding=padding, stride=stride, mode=1)
     (args, layer, outs)
 end
+
+# BATCHNORM
+function converter_batchnorm(node, g)
+    momentum = node.attribute[:momentum]
+    epsilon = node.attribute[:epsilon]
+
+    scale = g.initializer[node.input[2]]
+    B = g.initializer[node.input[3]]
+    mean = g.initializer[node.input[4]]
+    variance = g.initializer[node.input[5]]
+
+    X = node.input[1]
+    outs = node.output
+    layer = KL.BatchNorm(length(scale); momentum=momentum, mean=mean, var=variance)
+    (X, layer, outs)
 
 # CONCAT
 function converter_concat(node, g)
@@ -340,7 +356,6 @@ end
 function node_to_batchnorm(node, g)
     momentum = node.attribute[:momentum]
     epsilon = node.attribute[:epsilon]
-    spatial = node.attribute[:spatial]
 
     scale = g.initializer[node.input[2]]
     B = g.initializer[node.input[3]]
