@@ -36,13 +36,14 @@ function convert(node, g)
     if node.op_type == "BatchNormalization"; return converter_batchnorm(node, g); end
     if node.op_type == "Concat"; return converter_concat(node,g); end
     if node.op_type == "Constant"; return converter_constant(node, g); end
-    if node.op_type == "ConstantOfShape"; return converter_ConstantOfShape(node, g); end
+    if node.op_type == "ConstantOfShape"; return converter_constantOfShape(node, g); end
     if node.op_type == "Conv"; return converter_cnn(node,g); end
     if node.op_type == "Div"; return converter_div(node,g); end
     if node.op_type == "Dropout"; return converter_dropout(node,g); end
     if node.op_type == "Flatten"; return converter_flatten(node,g); end
     if node.op_type == "Gather"; return converter_gather(node,g); end
     if node.op_type == "Gemm"; return converter_gemm(node, g); end
+    if node.op_type == "GlobalAveragePool"; return converter_globalAveragePool(node, g); end
     if node.op_type == "LeakyRelu"; return converter_leakyrelu(node,g); end
     if node.op_type == "MaxPool"; return converter_maxpool(node,g); end
     if node.op_type == "Mul"; return converter_mul(node,g); end
@@ -242,6 +243,14 @@ function converter_gemm(node, g)
 
     # returns these 3, use these to create ModelLayer
     (args, layer, node.output)
+end
+
+# GlobalAveragePool
+function converter_globalAveragePool(node, g)
+    args = node.input
+    layer = KL.Pool()
+    outs = node.output
+    (args, layer, outs)
 end
 
 # LEAKY RELU - done
