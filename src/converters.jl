@@ -116,6 +116,7 @@ function converter_batchnorm(node, g)
     outs = node.output
     layer = KL.BatchNorm(length(scale); momentum=momentum, mean=mean, var=variance)
     (X, layer, outs)
+end
 
 # CONCAT
 function converter_concat(node, g)
