@@ -219,3 +219,8 @@ struct Reshape
     shape
 end
 (r::Reshape)(A) = reshape(A, r.shape)
+
+struct Cast
+    to
+end
+(c::Cast)(A) = convert(c.to, A)

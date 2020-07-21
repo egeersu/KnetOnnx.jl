@@ -39,6 +39,7 @@ function convert(node, g)
     if node.op_type == "Add"; return converter_add(node, g); end
     if node.op_type == "AveragePool"; return converter_avgpool(node,g); end
     if node.op_type == "BatchNormalization"; return converter_batchnorm(node, g); end
+    if node.op_type == "Cast"; return converter_cast(node,g); end
     if node.op_type == "Concat"; return converter_concat(node,g); end
     if node.op_type == "Constant"; return converter_constant(node, g); end
     if node.op_type == "ConstantOfShape"; return converter_constantOfShape(node, g); end
@@ -122,6 +123,15 @@ function converter_batchnorm(node, g)
     outs = node.output
     layer = KL.BatchNorm(length(scale); momentum=momentum, mean=mean, var=variance)
     (X, layer, outs)
+end
+
+# CAST
+function converter_cast(node, g)
+    args = node.input
+    outs = node.output
+    to = titlecase(node.attribute[:to]) # ONNX use uppercase but Julia use capitalize on data types
+    layer = KL.Cast(to)
+    (args, layer, outs)
 end
 
 # CONCAT
@@ -260,6 +270,7 @@ function converter_globalAveragePool(node, g)
     (args, layer, outs)
 end
 
+# Identity
 function converter_identity(node, g)
     args = node.input
     layer = identity()
