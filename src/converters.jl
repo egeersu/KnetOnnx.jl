@@ -49,6 +49,7 @@ function convert(node, g)
     if node.op_type == "Gather"; return converter_gather(node,g); end
     if node.op_type == "Gemm"; return converter_gemm(node, g); end
     if node.op_type == "GlobalAveragePool"; return converter_globalAveragePool(node, g); end
+    if node.op_type == "Identity"; return converter_identity(node, g); end
     if node.op_type == "LeakyRelu"; return converter_leakyrelu(node,g); end
     if node.op_type == "MaxPool"; return converter_maxpool(node,g); end
     if node.op_type == "Mul"; return converter_mul(node,g); end
@@ -255,6 +256,13 @@ end
 function converter_globalAveragePool(node, g)
     args = node.input
     layer = KL.Pool()
+    outs = node.output
+    (args, layer, outs)
+end
+
+function converter_identity(node, g)
+    args = node.input
+    layer = identity()
     outs = node.output
     (args, layer, outs)
 end
