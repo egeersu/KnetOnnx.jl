@@ -13,9 +13,13 @@ function PrintGraph(g)
     """
     Prints the ONNX graph.
     """
+    ops = [] # operator list
     println("model inputs: ", (x->x.name).(g.input))
     println("model outputs: ", (x->x.name).(g.output))
     for (i, node) in enumerate(g.node)
+        if join(node.op_type) ∉ ops
+            push!(ops, join(node.op_type))
+        end
         print("(op", i, ") ", node.op_type)
         println()
         for (i, input) in enumerate(node.input)
@@ -25,6 +29,7 @@ function PrintGraph(g)
             println("\toutput", i, ": " , output)
         end
     end
+    println("Operator list: ", ops)
 end
 
 function convert(node, g)
