@@ -224,3 +224,18 @@ struct Cast
     to
 end
 (c::Cast)(A) = convert(c.to, A)
+
+# Not working now!
+struct Slice
+    starts
+    ends
+    axes
+    steps
+end
+
+function (s::Slice)(A)
+    A[s.axes][s.starts:s.steps:s.ends]
+
+struct MatMul
+end
+(m::MatMul)(A,B) = A * B

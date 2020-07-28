@@ -52,6 +52,7 @@ function convert(node, g)
     if node.op_type == "GlobalAveragePool"; return converter_globalAveragePool(node, g); end
     if node.op_type == "Identity"; return converter_identity(node, g); end
     if node.op_type == "LeakyRelu"; return converter_leakyrelu(node,g); end
+    if node.op_type == "MatMul"; return converter_matmul(node,g); end
     if node.op_type == "MaxPool"; return converter_maxpool(node,g); end
     if node.op_type == "Mul"; return converter_mul(node,g); end
     if node.op_type == "Relu"; return converter_relu(node, g); end
@@ -59,6 +60,7 @@ function convert(node, g)
     if node.op_type == "RNN"; return converter_rnn(node, g);
     if node.op_type == "Shape"; return converter_shape(node, g); end
     if node.op_type == "Softmax"; return converter_softmax(node, g); end
+    if node.op_type == "Slice"; return converter_slice(node, g); end
     if node.op_type == "Sub"; return converter_sub(node,g); end
     if node.op_type == "Squeeze"; return converter_squeeze(node, g); end
     if node.op_type == "Transpose"; return converter_transpose(node,g); end
@@ -287,6 +289,14 @@ function converter_leakyrelu(node, g)
     (args, layer, outs)
 end
 
+# MatMul
+function converter_matmul(node, g)
+    args = node.input
+    layer = KL.MatMul()
+    outs = node.output
+    (args, layer, outs)
+end
+
 # MaxPool
 #currently treating [1,1,1,1] padding as an integer 1, same for
 function converter_maxpool(node, g)
@@ -347,6 +357,22 @@ function converter_softmax(node, g)
     args = node.input
     axis = node.attribute[:axis] == nothing ? 1 : node.attribute[:axis] # default axis = 1
     layer = KL.SoftMax(axis)
+    outs = node.output
+    (args, layer, outs)
+end
+
+"""
+Slice
+"""
+function converter_slice(node, g)
+    println("Slice not implemented yet!")
+    break
+    data = node.input[1]
+    starts = node.input[2]
+    ends = node.input[3]
+    axes = node.input[4]
+    steps = node.input[5]
+    layer = KL.Slice()
     outs = node.output
     (args, layer, outs)
 end
