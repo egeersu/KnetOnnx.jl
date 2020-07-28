@@ -366,7 +366,6 @@ Slice
 """
 function converter_slice(node, g)
     println("Slice not implemented yet!")
-    break
     data = node.input[1]
     starts = node.input[2]
     ends = node.input[3]
