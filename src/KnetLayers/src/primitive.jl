@@ -235,6 +235,7 @@ end
 
 function (s::Slice)(A)
     A[s.axes][s.starts:s.steps:s.ends]
+end
 
 struct MatMul
 end
